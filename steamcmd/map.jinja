@@ -1,0 +1,32 @@
+{% set commondefaults = {
+    steamuser: "steam",
+    steamuserdir: "/home/steam/steam",
+    steamusergroups: []
+} %}
+    
+
+{% set lookup_table = {
+    'Debian': {
+      'x86': {
+            'steampkgreqs': [],
+      },
+      'x86_64': {
+            'steampkgreqs': [ 'lib32gcc1'],
+      }
+    }
+    'RedHat': {
+      'x86': {
+            'steampkgreqs': [ 'glibc', 'libstdc++'],
+      },
+      'x86_64': {
+            'steampkgreqs': [ 'glibc.i686', 'libstdc++.i686'],
+      }
+    }
+} %}
+
+{% set os_map = lookup_table.get(grains.os_family, {}) %}
+{% set arch_map = os_map.get(grains.cpuarch, {}) %}
+
+{% set steamcmd = commondefaults %} 
+{% do steamcmd.update(arch_map) %} 
+{% do steamcmd.update(salt['pillar.get']('steamcmd:lookup', {})) %} 
