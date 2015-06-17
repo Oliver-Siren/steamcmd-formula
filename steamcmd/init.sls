@@ -11,7 +11,7 @@ steamcmd-download:
     - name: {{ steamcmd.steamuserdir }}/steamcmd_linux.tar.gz
     - source: https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
     - source_hash: md5=09e3f75c1ab5a501945c8c8b10c7f50e
-    - unless: test {{ steamcmd.steamuserdir }}/steamcmd.sh
+    - unless: test -f {{ steamcmd.steamuserdir }}/steamcmd.sh
 
 steamcmd-extract:
   cmd.run:
